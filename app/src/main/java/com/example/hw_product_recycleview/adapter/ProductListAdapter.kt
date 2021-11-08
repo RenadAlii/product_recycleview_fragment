@@ -2,7 +2,6 @@ package com.example.hw_product_recycleview.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +9,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hw_product_recycleview.ProductListFragmentDirections
 import com.example.hw_product_recycleview.R
-import com.example.hw_product_recycleview.SecondActivity1
 import com.example.hw_product_recycleview.model.Product
 
 class ProductListAdapter(
@@ -55,13 +55,16 @@ class ProductListAdapter(
             //check if quantityNumber of the product is > 0 then go to another activity
             //else show Toast
             if (product.quantityNumber > 0) {
-                val context = holder.view.context
-                val intent = Intent(context, SecondActivity1::class.java)
-                intent.putExtra("name", product.productName)
-                intent.putExtra("price", product.price)
-                intent.putExtra("image", product.productImage)
+                val action = ProductListFragmentDirections.
+                actionProductListFragmentToTheProductFragment (
+                    name = product.productName
+                    , price = product.price
+                    , image = product.productImage)
 
-                context.startActivity(intent)
+
+                //perform navigation action
+                holder.view.findNavController().navigate(action)
+
             } else {
                 Toast.makeText(
                     context,
@@ -71,6 +74,7 @@ class ProductListAdapter(
 
             }
         }
+
 
 
     }
